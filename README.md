@@ -2,8 +2,6 @@
 
 ## 1. Conceptos (20 puntos)
 
-## Preguntas de selección
-
 1. La herencia permite que una clase adquiera los atributos y métodos de otra clase.
     - a) Verdadero
     - b) Falso
