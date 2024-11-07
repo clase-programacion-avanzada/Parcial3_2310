@@ -1,4 +1,4 @@
-package org.example.models.conjuntoDatos;
+package org.example.models.conjunto_datos;
 
 public class ConjuntoDatosTabular extends ConjuntoDatos {
 

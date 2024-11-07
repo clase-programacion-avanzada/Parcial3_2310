@@ -1,0 +1,50 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class ConjuntoDatos {
+    - nombre: String
+    - tamanho: int
+
+    + ConjuntoDatos(nombre: String, tamanho: int)
+    + getNombre(): String
+    + getTamanho(): int
+    + setNombre(nombre: String): void
+    + setTamanho(tamanho: int): void
+    + {abstract} describir(): String
+}
+
+class ConjuntoDatosTabular extends ConjuntoDatos {
+    - nColumnas: int
+    - nFilas: int
+
+    + ConjuntoDatosTabular(nombre: String, tamanho: int, nColumnas: int, nFilas: int)
+    + getNColumnas(): int
+    + getNFilas(): int
+    + setNColumnas(nColumnas: int): void
+    + setNFilas(nFilas: int): void
+    + describir(): String
+}
+
+class ConjuntoDatosImagen extends ConjuntoDatos {
+    - dpi : int
+
+    + ConjuntoDatosImagen(nombre: String, tamanho: int, dpi: int)
+    + getDpi(): int
+    + setDpi(dpi: int): void
+    + describir(): String
+}
+
+class CatalogoDatos {
+    + {static} RUTA_PERSISTENCIA: String
+
+    + CatalogoDatos()
+    + exportar(ruta: String): void
+    + agregarConjuntoDatos(conjuntoDatos: ConjuntoDatos): void
+    + eliminarConjuntoDatos(nombre: String): void
+    + ordenar(): void
+
+}
+
+CatalogoDatos "1" o- "*" ConjuntoDatos : catalogo
+
+@enduml

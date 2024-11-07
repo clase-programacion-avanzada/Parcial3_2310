@@ -2,13 +2,15 @@ package org.example.models;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import org.example.models.conjuntoDatos.ConjuntoDatos;
+import org.example.models.conjunto_datos.ConjuntoDatos;
 
 public class CatalogoDatos {
 
@@ -16,6 +18,9 @@ public class CatalogoDatos {
 
     private List<ConjuntoDatos> catalogo;
 
+    public CatalogoDatos(List<ConjuntoDatos> catalogo) {
+        this.catalogo = new ArrayList<>(catalogo);
+    }
     //2.2 Punto 1 - Un constructor sin parámetros que cargue los conjuntos de datos de un archivo
     // binario. Puede asumir que la ruta del archivo está en la constante RUTA_ARCHIVO_PERSISTENCIA
     public CatalogoDatos() throws IOException, ClassNotFoundException {
@@ -26,6 +31,20 @@ public class CatalogoDatos {
         }
     }
 
+    public void serializar() throws IOException {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RUTA_PERSISTENCIA))) {
+            oos.writeObject(catalogo);
+        }
+    }
+
+    public List<String> describirConjuntos() {
+        List<String> descripciones = new ArrayList<>();
+        for (ConjuntoDatos conjuntoDatos : catalogo) {
+            descripciones.add(conjuntoDatos.describir());
+        }
+        return descripciones;
+    }
+
     //2.2 Punto 5 - Un método exportar que reciba la ruta de un archivo de texto y en este archivo
     //escriba la información de los conjuntos de datos incluidos en el catálogo. Cada línea
     //de este archivo describe a un (y sólo un) conjunto de datos usando el resultado
@@ -33,12 +52,7 @@ public class CatalogoDatos {
 
     public void exportar(String rutaArchivo) throws IOException {
 
-        List<String> descripciones = new ArrayList<>();
-
-        for (ConjuntoDatos conjuntoDatos : catalogo) {
-            String descripcion = conjuntoDatos.describir();
-            descripciones.add(descripcion);
-        }
+        List<String> descripciones = describirConjuntos();
 
         File archivo = new File(rutaArchivo);
         Files.write(archivo.toPath(), descripciones);
@@ -80,6 +94,8 @@ public class CatalogoDatos {
     //2.2 Punto 8 - Un método ordenar que ordene la lista de conjuntos de datos según su tamaño y
     //en orden ascendente (de menor a mayor)
     public void ordenar() {
+
+        // Forma de hacerlo usando el método sort de la clase List
         catalogo.sort(
             (ConjuntoDatos cd1, ConjuntoDatos cd2) ->
                 cd1.getTamanho() - cd2.getTamanho()

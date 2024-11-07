@@ -40,3 +40,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/src/main/resources/catalogo.dat
+/src/main/resources/catalogo.txt
